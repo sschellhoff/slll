@@ -10,8 +10,6 @@ namespace slll {
 	{
 	private:
 		Scanner scanner;
-		Token buffer;
-		bool bufferUsed;
 	public:
 		Siever(std::string sourcecode);
 		~Siever();

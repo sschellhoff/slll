@@ -4,7 +4,7 @@
 
 namespace slll {
 
-	class IntConstASTNode : IAST
+	class IntConstASTNode : public IAST
 	{
 	public:
 		IntConstASTNode();

@@ -7,6 +7,8 @@ namespace slll {
 	public:
 		IAST();
 		~IAST();
+		IAST(const IAST &t) = delete;
+		IAST(IAST &&t) {}
 	};
 
 }

@@ -119,12 +119,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BinOpASTNode.cpp" />
+    <ClCompile Include="IAST.cpp" />
+    <ClCompile Include="IntConstASTNode.cpp" />
+    <ClCompile Include="ParseException.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Siever.cpp" />
     <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinOpASTNode.h" />
+    <ClInclude Include="IAST.h" />
+    <ClInclude Include="IntConstASTNode.h" />
+    <ClInclude Include="ParseException.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Siever.h" />
