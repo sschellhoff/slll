@@ -2,10 +2,12 @@
 
 using namespace slll;
 
+Token::Token(TokenType type):type(type), value("") {
+}
+
 Token::Token(TokenType type, std::string value):type(type), value(value)
 {
 }
-
 
 Token::~Token()
 {

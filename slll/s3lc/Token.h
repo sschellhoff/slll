@@ -11,6 +11,7 @@ namespace slll {
 		TokenType type;
 		std::string value;
 	public:
+		Token(TokenType type);
 		Token(TokenType type, std::string value);
 		~Token();
 

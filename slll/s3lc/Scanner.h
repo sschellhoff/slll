@@ -13,6 +13,8 @@ namespace slll {
 	public:
 		Scanner(std::string sourcecode);
 		~Scanner();
+		Scanner(Scanner &&s);
+		Scanner(const Scanner &c) = delete;
 
 		Token NextToken();
 	};

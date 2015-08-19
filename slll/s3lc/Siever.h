@@ -15,6 +15,8 @@ namespace slll {
 	public:
 		Siever(std::string sourcecode);
 		~Siever();
+		Siever(Siever &&s);
+		Siever(const Siever &c) = delete;
 
 		Token NextToken();
 	};

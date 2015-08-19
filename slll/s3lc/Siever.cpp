@@ -2,13 +2,16 @@
 
 using namespace slll;
 
-Siever::Siever(std::string sourcecode):scanner(sourcecode), buffer(TokenType::error, ""), bufferUsed(false)
+Siever::Siever(std::string sourcecode):scanner(sourcecode), buffer(TokenType::error), bufferUsed(false)
 {
 }
 
 
 Siever::~Siever()
 {
+}
+
+slll::Siever::Siever(Siever && s) :scanner(std::move(s.scanner)), buffer(s.buffer) {
 }
 
 Token slll::Siever::NextToken()
