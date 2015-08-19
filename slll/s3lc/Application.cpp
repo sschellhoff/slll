@@ -1,11 +1,15 @@
 #include <iostream>
-#include "Scanner.h"
+#include "Siever.h"
 
 int main(int argc, const char *argv[]) {
-	std::cout << "Hello, World!" << std::endl;
-	auto scanner = slll::Scanner("1+2*3");
-	std::cout << scanner.NextToken() << std::endl;
-	int i;
-	std::cin >> i;
+
+	auto lexer = slll::Siever("");
+
+	slll::Token t(slll::error, "");
+	while ((t = lexer.NextToken()).Type() != slll::TokenType::eof) {
+		std::cout << t.Type() << std::endl;
+	}
+
+	std::system("pause");
 	return 0;
 }
