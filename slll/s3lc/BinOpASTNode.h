@@ -3,8 +3,7 @@
 #include <memory>
 
 #include "IAST.h"
-
-using ast = std::unique_ptr<slll::IAST>;
+#include "TokenType.h"
 
 namespace slll {
 
@@ -13,9 +12,16 @@ namespace slll {
 	private:
 		ast left;
 		ast right;
+		TokenType op;
 	public:
-		BinOpASTNode(ast left, ast right);
+		BinOpASTNode(ast left, ast right, TokenType op);
 		~BinOpASTNode();
+		BinOpASTNode(const BinOpASTNode &r) = delete;
+		BinOpASTNode(BinOpASTNode &&n);
+		IAST *Left()const;
+		IAST *Right()const;
+		TokenType Op()const;
+		void AcceptVisitor(IVisitor *visitor);
 	};
 
 }

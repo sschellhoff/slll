@@ -1,19 +1,24 @@
 #include <iostream>
+#include <fstream>
 
-#include "Siever.h"
 #include "Parser.h"
+#include "GASVisitor.h"
 
 int main(int argc, const char *argv[]) {
+	slll::Parser p("{ a := 1 printi a println { a:= 2 printi a println } printi a println }");
+	auto tree = p.Parse();
 
-	slll::Siever lexer("1+2");
+	std::ofstream file;
+	file.open("out.S");
 
-	slll::Token t(slll::error, "");
-	while ((t = lexer.NextToken()).Type() != slll::TokenType::eof) {
-		std::cout << t.Type() << std::endl;
-	}
+	slll::GASVisitor gas(file);
+	//slll::GASVisitor gas(std::cout);
+	gas.WriteProgramPrefix();
+	tree->AcceptVisitor(&gas);
+	gas.WriteProgramSuffix();
 
-	slll::Parser p("1+2");
-	p.Parse();
+	file.close();
+
 	std::system("pause");
 	return 0;
 }

@@ -119,25 +119,55 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AssignmentASTNode.cpp" />
     <ClCompile Include="BinOpASTNode.cpp" />
+    <ClCompile Include="DeclarationASTNode.cpp" />
+    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="GASVisitor.cpp" />
     <ClCompile Include="IAST.cpp" />
     <ClCompile Include="IntConstASTNode.cpp" />
+    <ClCompile Include="IVisitor.cpp" />
+    <ClCompile Include="NegationASTNode.cpp" />
     <ClCompile Include="ParseException.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PrintIntStatement.cpp" />
+    <ClCompile Include="PrintNewLineStatement.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Siever.cpp" />
+    <ClCompile Include="StatementBlockASTNode.cpp" />
     <ClCompile Include="Token.cpp" />
+    <ClCompile Include="VariableASTNode.cpp" />
+    <ClCompile Include="Variable.cpp" />
+    <ClCompile Include="VariableNotFoundExeption.cpp" />
+    <ClCompile Include="VariableRedeclarationException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssignmentASTNode.h" />
     <ClInclude Include="BinOpASTNode.h" />
+    <ClInclude Include="DeclarationASTNode.h" />
+    <ClInclude Include="Environment.h" />
+    <ClInclude Include="GASVisitor.h" />
     <ClInclude Include="IAST.h" />
     <ClInclude Include="IntConstASTNode.h" />
+    <ClInclude Include="IVisitor.h" />
+    <ClInclude Include="NegationASTNode.h" />
     <ClInclude Include="ParseException.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="PrintIntStatementASTNode.h" />
+    <ClInclude Include="PrintNewLineStatementASTNode.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Siever.h" />
+    <ClInclude Include="StatementBlockASTNode.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="TokenType.h" />
+    <ClInclude Include="VariableASTNode.h" />
+    <ClInclude Include="Variable.h" />
+    <ClInclude Include="VariableNotFoundExeption.h" />
+    <ClInclude Include="VariableRedeclarationException.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="s3lc.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
