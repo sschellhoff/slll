@@ -1,7 +1,7 @@
 #pragma once
 
 namespace slll {
-	enum TokenType
+	enum class TokenType
 	{
 		add,			// addition operator		+
 		sub,			// subtraction operator		-

@@ -27,8 +27,8 @@ GASVisitor::~GASVisitor()
 
 void GASVisitor::WriteProgramPrefix() {
 	out << ".text" << std::endl
-		<< ".globl _prog" << std::endl
-		<< "_prog:" << std::endl
+		<< ".globl _main" << std::endl
+		<< "_main:" << std::endl
 		<< "push %ebp" << std::endl
 		<< "mov %esp, %ebp" << std::endl;
 }
