@@ -9,6 +9,10 @@
 #include "AssignmentASTNode.h"
 #include "VariableASTNode.h"
 #include "NegationASTNode.h"
+#include "IfASTNode.h"
+#include "IfElseASTNode.h"
+#include "WhileASTNode.h"
+#include <sstream>
 
 using namespace slll;
 
@@ -32,6 +36,12 @@ void GASVisitor::WriteProgramPrefix() {
 void GASVisitor::WriteProgramSuffix() {
 	out << "pop %ebp" << std::endl
 		<< "ret" << std::endl;
+}
+
+std::string GASVisitor::NewMarker() {
+	std::stringstream ss;
+	ss << "M" << nextMarkerId++;
+	return ss.str();
 }
 
 void GASVisitor::Visit(const IntConstASTNode * node)
@@ -125,4 +135,38 @@ void GASVisitor::Visit(const VariableASTNode *n) {
 void GASVisitor::Visit(const NegationASTNode *n) {
 	n->Expression()->AcceptVisitor(this);
 	out << "negl %eax" << std::endl;
+}
+
+void GASVisitor::Visit(const IfASTNode *n) {
+	auto marker = NewMarker();
+	n->Condition()->AcceptVisitor(this);
+	out << "cmpl $0, %eax" << std::endl
+		<< "je " << marker << std::endl;
+	n->ThenBody()->AcceptVisitor(this);
+	out << marker << ":" << std::endl;
+}
+
+void GASVisitor::Visit(const IfElseASTNode *n) {
+	auto elseMarker = NewMarker();
+	auto endMarker = NewMarker();
+	n->Condition()->AcceptVisitor(this);
+	out << "cmpl $0, %eax" << std::endl
+		<< "je " << elseMarker << std::endl;
+	n->ThenBody()->AcceptVisitor(this);
+	out << "jmp " << endMarker << std::endl
+		<< elseMarker << ":" << std::endl;
+	n->ElseBody()->AcceptVisitor(this);
+	out << endMarker << ":" << std::endl;
+}
+
+void GASVisitor::Visit(const WhileASTNode *n) {
+	auto startMarker = NewMarker();
+	auto endMarker = NewMarker();
+	out << startMarker << ":" << std::endl;
+	n->Condition()->AcceptVisitor(this);
+	out << "cmpl $0, %eax" << std::endl
+		<< "je " << endMarker << std::endl;
+	n->Body()->AcceptVisitor(this);
+	out << "jmp " << startMarker << std::endl
+		<< endMarker << ":" << std::endl;
 }

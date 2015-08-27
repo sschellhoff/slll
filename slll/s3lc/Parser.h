@@ -20,6 +20,8 @@ namespace slll {
 		ast termext(Environment *env, ast left);
 		ast factor(Environment *env);
 		ast literal(Environment *env);
+		ast if_statement(Environment *env);
+		ast while_statement(Environment *env);
 		ast declaration(Environment *env, unsigned int varid);
 		ast assignment(Environment *env, unsigned int varid);
 		Token currentToken;

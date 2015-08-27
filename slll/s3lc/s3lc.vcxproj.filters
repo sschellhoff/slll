@@ -99,6 +99,15 @@
     <ClCompile Include="VariableASTNode.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="IfASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="IfElseASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="WhileASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ParseException.h">
@@ -168,6 +177,15 @@
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="VariableASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="IfASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="WhileASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="IfElseASTNode.h">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
   </ItemGroup>

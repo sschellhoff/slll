@@ -13,6 +13,9 @@
 #include "AssignmentASTNode.h"
 #include "VariableASTNode.h"
 #include "NegationASTNode.h"
+#include "IfASTNode.h"
+#include "IfElseASTNode.h"
+#include "WhileASTNode.h"
 
 using namespace slll;
 
@@ -48,6 +51,10 @@ ast Parser::statement(Environment *env) {
 	} else if (currentToken.Type() == TokenType::println) {
 		currentToken = lexer.NextToken();
 		return std::make_unique<PrintNewLineStatementASTNode>();
+	} else if (currentToken.Type() == TokenType::if_ident) {
+		return if_statement(env);
+	} else if(currentToken.Type() == TokenType::while_ident) {
+		return while_statement(env);
 	} else if (currentToken.Type() == TokenType::identifier) {
 		auto name = currentToken.Value();
 		currentToken = lexer.NextToken();
@@ -131,6 +138,31 @@ ast Parser::literal(Environment *env) {
 		auto var = env->GetId(currentToken.Value());
 		currentToken = lexer.NextToken();
 		return std::make_unique<VariableASTNode>(var);
+	}
+	throw ParseException();
+}
+
+ast Parser::if_statement(Environment *env) {
+	if (currentToken.Type() == TokenType::if_ident) {
+		currentToken = lexer.NextToken();
+		auto condition = expression(env);
+		auto thenBlock = statement(env);
+		if (currentToken.Type() == TokenType::else_ident) {
+			currentToken = lexer.NextToken();
+			auto elseBlock = statement(env);
+			return std::make_unique<IfElseASTNode>(std::move(condition), std::move(thenBlock), std::move(elseBlock));
+		}
+		return std::make_unique<IfASTNode>(std::move(condition), std::move(thenBlock));
+	}
+	throw ParseException();
+}
+
+ast Parser::while_statement(Environment *env) {
+	if (currentToken.Type() == TokenType::while_ident) {
+		currentToken = lexer.NextToken();
+		auto condition = expression(env);
+		auto body = statement(env);
+		return std::make_unique<WhileASTNode>(std::move(condition), std::move(body));
 	}
 	throw ParseException();
 }

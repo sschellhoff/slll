@@ -125,6 +125,8 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="GASVisitor.cpp" />
     <ClCompile Include="IAST.cpp" />
+    <ClCompile Include="IfASTNode.cpp" />
+    <ClCompile Include="IfElseASTNode.cpp" />
     <ClCompile Include="IntConstASTNode.cpp" />
     <ClCompile Include="IVisitor.cpp" />
     <ClCompile Include="NegationASTNode.cpp" />
@@ -140,6 +142,7 @@
     <ClCompile Include="Variable.cpp" />
     <ClCompile Include="VariableNotFoundExeption.cpp" />
     <ClCompile Include="VariableRedeclarationException.cpp" />
+    <ClCompile Include="WhileASTNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssignmentASTNode.h" />
@@ -148,6 +151,8 @@
     <ClInclude Include="Environment.h" />
     <ClInclude Include="GASVisitor.h" />
     <ClInclude Include="IAST.h" />
+    <ClInclude Include="IfASTNode.h" />
+    <ClInclude Include="IfElseASTNode.h" />
     <ClInclude Include="IntConstASTNode.h" />
     <ClInclude Include="IVisitor.h" />
     <ClInclude Include="NegationASTNode.h" />
@@ -165,6 +170,7 @@
     <ClInclude Include="Variable.h" />
     <ClInclude Include="VariableNotFoundExeption.h" />
     <ClInclude Include="VariableRedeclarationException.h" />
+    <ClInclude Include="WhileASTNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="s3lc.rc" />
