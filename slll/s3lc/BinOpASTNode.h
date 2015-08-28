@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "IAST.h"
-#include "TokenType.h"
+#include "BinaryOperator.h"
 
 namespace slll {
 
@@ -12,15 +12,15 @@ namespace slll {
 	private:
 		ast left;
 		ast right;
-		TokenType op;
+		BinaryOperator op;
 	public:
-		BinOpASTNode(ast left, ast right, TokenType op);
+		BinOpASTNode(ast left, ast right, BinaryOperator op);
 		~BinOpASTNode();
 		BinOpASTNode(const BinOpASTNode &r) = delete;
 		BinOpASTNode(BinOpASTNode &&n);
 		IAST *Left()const;
 		IAST *Right()const;
-		TokenType Op()const;
+		BinaryOperator Op()const;
 		void AcceptVisitor(IVisitor *visitor);
 	};
 

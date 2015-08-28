@@ -1,18 +1,18 @@
-#include "Environment.h"
+#include "VariablesEnvironment.h"
 #include "VariableNotFoundExeption.h"
 
 using namespace slll;
 
-Environment::Environment(Environment *parent):parent(parent)
+VariablesEnvironment::VariablesEnvironment(VariablesEnvironment *parent):parent(parent)
 {
 }
 
 
-Environment::~Environment()
+VariablesEnvironment::~VariablesEnvironment()
 {
 }
 
-bool Environment::ExistsInScope(unsigned int id)const {
+bool VariablesEnvironment::ExistsInScope(unsigned int id)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Id() == id) {
 			return true;
@@ -24,7 +24,7 @@ bool Environment::ExistsInScope(unsigned int id)const {
 	return parent->ExistsInScope(id);
 }
 
-bool Environment::ExistsInScope(std::string name)const {
+bool VariablesEnvironment::ExistsInScope(std::string name)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Name() == name) {
 			return true;
@@ -36,7 +36,7 @@ bool Environment::ExistsInScope(std::string name)const {
 	return parent->ExistsInScope(name);
 }
 
-bool Environment::Contains(std::string name)const {
+bool VariablesEnvironment::Contains(std::string name)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Name() == name) {
 			return true;
@@ -45,7 +45,7 @@ bool Environment::Contains(std::string name)const {
 	return false;
 }
 
-bool Environment::Contains(unsigned int id)const {
+bool VariablesEnvironment::Contains(unsigned int id)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Id() == id) {
 			return true;
@@ -54,12 +54,12 @@ bool Environment::Contains(unsigned int id)const {
 	return false;
 }
 
-unsigned int Environment::AddVariable(std::string name, size_t size) {
+unsigned int VariablesEnvironment::AddVariable(std::string name, size_t size) {
 	variables.push_back(Variable(name, size));
 	return (variables.end() - 1)->Id();
 }
 
-unsigned int Environment::GetId(std::string name)const {
+unsigned int VariablesEnvironment::GetId(std::string name)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Name() == name) {
 			return (*it).Id();
@@ -71,7 +71,7 @@ unsigned int Environment::GetId(std::string name)const {
 	return parent->GetId(name);
 }
 
-size_t Environment::GetSize()const {
+size_t VariablesEnvironment::GetSize()const {
 	size_t size = 0;
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		size += (*it).Size();
@@ -79,14 +79,14 @@ size_t Environment::GetSize()const {
 	return size;
 }
 
-size_t Environment::GetSizeFromParents()const {
+size_t VariablesEnvironment::GetSizeFromParents()const {
 	if (parent != nullptr) {
 		return parent->GetSize() + parent->GetSizeFromParents();
 	}
 	return 0;
 }
 
-int Environment::GetRelativeAdress(unsigned int id)const {
+int VariablesEnvironment::GetRelativeAdress(unsigned int id)const {
 	if (Contains(id)) {
 		unsigned int offset = GetSizeFromParents();
 

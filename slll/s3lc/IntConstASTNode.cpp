@@ -13,7 +13,7 @@ IntConstASTNode::~IntConstASTNode()
 }
 
 IntConstASTNode::IntConstASTNode(IntConstASTNode &&n) {
-	n.value = this->value;
+	value = n.value;
 }
 
 int slll::IntConstASTNode::Value() const

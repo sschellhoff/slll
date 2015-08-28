@@ -121,8 +121,15 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssignmentASTNode.cpp" />
     <ClCompile Include="BinOpASTNode.cpp" />
+    <ClCompile Include="ComplementASTNode.cpp" />
     <ClCompile Include="DeclarationASTNode.cpp" />
-    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="FunctionDefinitionsASTNode.cpp" />
+    <ClCompile Include="FunctionRedefinitionException.cpp" />
+    <ClCompile Include="FunctionsEnvironment.cpp" />
+    <ClCompile Include="UnknownOperatorException.cpp" />
+    <ClCompile Include="VariablesEnvironment.cpp" />
+    <ClCompile Include="Function.cpp" />
+    <ClCompile Include="FunctionDefinitionASTNode.cpp" />
     <ClCompile Include="GASVisitor.cpp" />
     <ClCompile Include="IAST.cpp" />
     <ClCompile Include="IfASTNode.cpp" />
@@ -146,9 +153,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssignmentASTNode.h" />
+    <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="BinOpASTNode.h" />
+    <ClInclude Include="ComplementASTNode.h" />
     <ClInclude Include="DeclarationASTNode.h" />
-    <ClInclude Include="Environment.h" />
+    <ClInclude Include="FunctionDefinitionsASTNode.h" />
+    <ClInclude Include="FunctionRedefinitionException.h" />
+    <ClInclude Include="FunctionsEnvironment.h" />
+    <ClInclude Include="UnknownOperatorException.h" />
+    <ClInclude Include="VariablesEnvironment.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="FunctionDefinitionASTNode.h" />
     <ClInclude Include="GASVisitor.h" />
     <ClInclude Include="IAST.h" />
     <ClInclude Include="IfASTNode.h" />

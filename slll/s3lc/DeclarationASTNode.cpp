@@ -13,8 +13,8 @@ DeclarationASTNode::~DeclarationASTNode()
 }
 
 DeclarationASTNode::DeclarationASTNode(DeclarationASTNode &&n) {
-	n.variable_id = variable_id;
-	n.expression = std::move(expression);
+	variable_id = n.variable_id;
+	expression = std::move(n.expression);
 }
 
 unsigned int DeclarationASTNode::VariableId()const {

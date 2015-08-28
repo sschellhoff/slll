@@ -3,7 +3,7 @@
 
 using namespace slll;
 
-StatementBlockASTNode::StatementBlockASTNode(slll::Environment *parentEnvironment):environment(std::make_unique<slll::Environment>(parentEnvironment))
+StatementBlockASTNode::StatementBlockASTNode(slll::VariablesEnvironment *parentEnvironment):environment(std::make_unique<slll::VariablesEnvironment>(parentEnvironment))
 {
 }
 
@@ -26,10 +26,10 @@ void StatementBlockASTNode::Add(std::unique_ptr<IAST> child) {
 	children.push_back(std::move(child));
 }
 
-const std::vector<std::unique_ptr<IAST>> *StatementBlockASTNode::Children() const {
+const std::list<std::unique_ptr<IAST>> *StatementBlockASTNode::Children() const {
 	return &children;
 }
 
-Environment *StatementBlockASTNode::Environment() const {
+VariablesEnvironment *StatementBlockASTNode::VariablesEnvironment() const {
 	return environment.get();
 }

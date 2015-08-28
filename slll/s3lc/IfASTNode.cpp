@@ -13,8 +13,8 @@ IfASTNode::~IfASTNode()
 }
 
 IfASTNode::IfASTNode(IfASTNode &&n) {
-	n.condition = std::move(this->condition);
-	n.thenBody = std::move(this->thenBody);
+	condition = std::move(n.condition);
+	thenBody = std::move(n.thenBody);
 }
 
 IAST *IfASTNode::Condition()const {

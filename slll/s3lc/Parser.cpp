@@ -3,6 +3,7 @@
 #include "ParseException.h"
 #include "VariableRedeclarationException.h"
 #include "VariableNotFoundExeption.h"
+#include "BinaryOperator.h"
 
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
@@ -16,6 +17,7 @@
 #include "IfASTNode.h"
 #include "IfElseASTNode.h"
 #include "WhileASTNode.h"
+#include "ComplementASTNode.h"
 
 using namespace slll;
 
@@ -33,12 +35,12 @@ ast Parser::Parse() {
 	return result;
 }
 
-ast Parser::statement(Environment *env) {
+ast Parser::statement(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::lbra) {
 		currentToken = lexer.NextToken();
 		auto result = std::make_unique<StatementBlockASTNode>(env);
 		while (currentToken.Type() != TokenType::rbra && currentToken.Type() != TokenType::eof) {
-			result->Add(statement(result->Environment()));
+			result->Add(statement(result->VariablesEnvironment()));
 		}
 		if (currentToken.Type() != TokenType::rbra) {
 			throw ParseException("missing right bracket of statement block");
@@ -75,51 +77,158 @@ ast Parser::statement(Environment *env) {
 	throw ParseException();
 }
 
-ast Parser::expression(Environment *env) {
-	auto left = term(env);
-	return expressionext(env, std::move(left));
+ast Parser::expression(VariablesEnvironment *env) {
+	return disjunct(env);
 }
 
-ast Parser::expressionext(Environment *env, ast left) {
+ast Parser::disjunct(VariablesEnvironment *env) {
+	auto left = conjunct(env);
+	return disjunctext(env, std::move(left));
+}
+
+ast Parser::disjunctext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
+	switch (currentToken.Type()) {
+	case TokenType::boolOr:
+		op = BinaryOperator::boolOr;
+		break;
+	default:
+		return left;
+	}
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), conjunct(env), op);
+	return disjunctext(env, std::move(leftNew));
+}
+
+ast Parser::conjunct(VariablesEnvironment *env) {
+	auto left = equality(env);
+	return conjunctext(env, std::move(left));
+}
+
+ast Parser::conjunctext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
+	switch (currentToken.Type()) {
+	case TokenType::boolAnd:
+		op = BinaryOperator::boolAnd;
+		break;
+	default:
+		return left;
+	}
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), equality(env), op);
+	return conjunctext(env, std::move(leftNew));
+}
+
+ast Parser::equality(VariablesEnvironment *env) {
+	auto left = relation(env);
+	return equalityext(env, std::move(left));
+}
+
+ast Parser::equalityext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
+	switch (currentToken.Type()) {
+	case TokenType::eq:
+		op = BinaryOperator::equals;
+		break;
+	case TokenType::ne:
+		op = BinaryOperator::unEquals;
+		break;
+	default:
+		return left;
+	}
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), relation(env), op);
+	return equalityext(env, std::move(leftNew));
+}
+
+ast Parser::relation(VariablesEnvironment *env) {
+	auto left = addsub(env);
+	return relationext(env, std::move(left));
+}
+
+ast Parser::relationext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
+	switch (currentToken.Type()) {
+	case TokenType::lt:
+		op = BinaryOperator::less;
+		break;
+	case TokenType::gt:
+		op = BinaryOperator::greater;
+		break;
+	case TokenType::le:
+		op = BinaryOperator::lessEquals;
+		break;
+	case TokenType::ge:
+		op = BinaryOperator::greaterEquals;
+		break;
+	default:
+		return left;
+	}
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), addsub(env), op);
+	return relationext(env, std::move(leftNew));
+}
+
+ast Parser::addsub(VariablesEnvironment *env) {
+	auto left = multdivmod(env);
+	return addsubext(env, std::move(left));
+}
+
+ast Parser::addsubext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
 	switch (currentToken.Type()) {
 	case TokenType::add:
+		op = BinaryOperator::add;
+		break;
 	case TokenType::sub:
-		auto tt = currentToken.Type();
-		currentToken = lexer.NextToken();
-		auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), term(env), tt);
-		return expressionext(env, std::move(leftNew));
+		op = BinaryOperator::sub;
+		break;
+	default:
+		return left;
 	}
-	return left;
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), multdivmod(env), op);
+	return addsubext(env, std::move(leftNew));
 }
 
-ast Parser::term(Environment *env) {
+ast Parser::multdivmod(VariablesEnvironment *env) {
 	auto left = factor(env);
-	return termext(env, std::move(left));
+	return multdivmodext(env, std::move(left));
 }
 
-ast Parser::termext(Environment *env, ast left) {
+ast Parser::multdivmodext(VariablesEnvironment *env, ast left) {
+	BinaryOperator op;
 	switch (currentToken.Type()) {
 		case TokenType::mult:
+			op = BinaryOperator::mult;
+			break;
 		case TokenType::div:
+			op = BinaryOperator::div;
+			break;
 		case TokenType::mod:
-			auto tt = currentToken.Type();
-			currentToken = lexer.NextToken();
-			auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), factor(env), tt);
-			return termext(env, std::move(leftNew));
+			op = BinaryOperator::mod;
+			break;
+		default:
+			return left;
 	}
-	return left;
+	currentToken = lexer.NextToken();
+	auto leftNew = std::make_unique<BinOpASTNode>(std::move(left), factor(env), op);
+	return multdivmodext(env, std::move(leftNew));
 }
 
-ast Parser::factor(Environment *env) {
+ast Parser::factor(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::intconst || currentToken.Type() == TokenType::identifier) {
 		return literal(env);
 	}
 	else if (currentToken.Type() == TokenType::sub) {
 		currentToken = lexer.NextToken();
 		return std::make_unique<NegationASTNode>(literal(env));
+	} else if(currentToken.Type() == TokenType::neg) {
+		currentToken = lexer.NextToken();
+		return std::make_unique<ComplementASTNode>(literal(env));
 	} else if (currentToken.Type() == TokenType::lpar) {
 		currentToken = lexer.NextToken();
-		auto result = expression(env);
+		auto result = disjunct(env);
 		if (currentToken.Type() != TokenType::rpar) {
 			throw ParseException();
 		}
@@ -129,7 +238,7 @@ ast Parser::factor(Environment *env) {
 	throw ParseException();
 }
 
-ast Parser::literal(Environment *env) {
+ast Parser::literal(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::intconst) {
 		int val = atoi(currentToken.Value().c_str());
 		currentToken = lexer.NextToken();
@@ -142,7 +251,7 @@ ast Parser::literal(Environment *env) {
 	throw ParseException();
 }
 
-ast Parser::if_statement(Environment *env) {
+ast Parser::if_statement(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::if_ident) {
 		currentToken = lexer.NextToken();
 		auto condition = expression(env);
@@ -157,7 +266,7 @@ ast Parser::if_statement(Environment *env) {
 	throw ParseException();
 }
 
-ast Parser::while_statement(Environment *env) {
+ast Parser::while_statement(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::while_ident) {
 		currentToken = lexer.NextToken();
 		auto condition = expression(env);
@@ -167,7 +276,7 @@ ast Parser::while_statement(Environment *env) {
 	throw ParseException();
 }
 
-ast Parser::declaration(Environment *env, unsigned int varid) {
+ast Parser::declaration(VariablesEnvironment *env, unsigned int varid) {
 	if (currentToken.Type() == TokenType::decl) {
 		currentToken = lexer.NextToken();
 		return std::make_unique<DeclarationASTNode>(varid, expression(env));
@@ -175,7 +284,7 @@ ast Parser::declaration(Environment *env, unsigned int varid) {
 	throw ParseException();
 }
 
-ast Parser::assignment(Environment *env, unsigned int varid) {
+ast Parser::assignment(VariablesEnvironment *env, unsigned int varid) {
 	if (currentToken.Type() == TokenType::assign) {
 		currentToken = lexer.NextToken();
 		return std::make_unique<AssignmentASTNode>(varid, expression(env));

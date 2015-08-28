@@ -11,6 +11,8 @@ namespace slll {
 	public:
 		PrintIntStatementASTNode(ast expression);
 		~PrintIntStatementASTNode();
+		PrintIntStatementASTNode(const PrintIntStatementASTNode &n) = delete;
+		PrintIntStatementASTNode(PrintIntStatementASTNode &&n);
 		IAST *Expression()const;
 		void AcceptVisitor(IVisitor *visitor);
 	};

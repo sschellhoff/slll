@@ -5,7 +5,7 @@
 #include "GASVisitor.h"
 
 int main(int argc, const char *argv[]) {
-	slll::Parser p("{ x1 := 5 x2 := 1 while x1 { x1 = x1 - 1 x3 := x2 while x3 { x2 = x2 + x1 x3 = x3 - 1 } } printi x2 }");
+	slll::Parser p(" { if 0 && 0 printi 1 if 0 && 1 printi 2 if 1 && 0 printi 3 if 1 && 1 printi 4  if 0 || 0 printi 5 if 0 || 1 printi 6 if 1 || 0 printi 7 if 1 || 1 printi 8 }");
 	auto tree = p.Parse();
 
 	std::ofstream file;

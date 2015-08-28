@@ -103,6 +103,18 @@ Token Scanner::NextToken()
 			return Token(TokenType::ne);
 		}
 		return Token(TokenType::neg);
+	case '&':
+		if (pointer < sourcecode.length() && sourcecode[pointer] == '&') {
+			pointer++;
+			return Token(TokenType::boolAnd);
+		}
+		Token(TokenType::error, "unknown operator &");
+	case '|':
+		if (pointer < sourcecode.length() && sourcecode[pointer] == '|') {
+			pointer++;
+			return Token(TokenType::boolOr);
+		}
+		Token(TokenType::error, "unknown operator |");
 	case '(':
 		return Token(TokenType::lpar);
 	case ')':

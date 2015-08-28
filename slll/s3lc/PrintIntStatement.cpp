@@ -12,6 +12,10 @@ PrintIntStatementASTNode::~PrintIntStatementASTNode()
 {
 }
 
+PrintIntStatementASTNode::PrintIntStatementASTNode(PrintIntStatementASTNode &&n) {
+	expression = std::move(n.expression);
+}
+
 IAST *PrintIntStatementASTNode::Expression()const {
 	return expression.get();
 }

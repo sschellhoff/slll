@@ -31,12 +31,21 @@
     <Filter Include="Source Files\visitor">
       <UniqueIdentifier>{df701b22-1e2e-4dce-9095-5dfcb2f85171}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\exceptions">
+      <UniqueIdentifier>{48479a72-fcd4-4a75-89cf-b68abf3011df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\exceptions">
+      <UniqueIdentifier>{0e69339e-f646-490e-a6a1-71fd1c8c0e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\environments">
+      <UniqueIdentifier>{0e5ab640-d41b-47b4-9a27-a1c9b058a947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\environments">
+      <UniqueIdentifier>{1b49b105-d9cf-464c-a8b1-43a9af38dcbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParseException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BinOpASTNode.cpp">
@@ -75,20 +84,8 @@
     <ClCompile Include="Token.cpp">
       <Filter>Source Files\frontend</Filter>
     </ClCompile>
-    <ClCompile Include="Environment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Variable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VariableNotFoundExeption.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeclarationASTNode.cpp">
       <Filter>Source Files\nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="VariableRedeclarationException.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AssignmentASTNode.cpp">
       <Filter>Source Files\nodes</Filter>
@@ -108,11 +105,44 @@
     <ClCompile Include="WhileASTNode.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
+    <ClCompile Include="FunctionDefinitionASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionDefinitionsASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionRedefinitionException.cpp">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ParseException.cpp">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableNotFoundExeption.cpp">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableRedeclarationException.cpp">
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionsEnvironment.cpp">
+      <Filter>Source Files\environments</Filter>
+    </ClCompile>
+    <ClCompile Include="VariablesEnvironment.cpp">
+      <Filter>Source Files\environments</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Variable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplementASTNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnknownOperatorException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ParseException.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BinOpASTNode.h">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
@@ -155,20 +185,8 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Environment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Variable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VariableNotFoundExeption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DeclarationASTNode.h">
       <Filter>Header Files\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="VariableRedeclarationException.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AssignmentASTNode.h">
       <Filter>Header Files\nodes</Filter>
@@ -187,6 +205,45 @@
     </ClInclude>
     <ClInclude Include="IfElseASTNode.h">
       <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionDefinitionASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionDefinitionsASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseException.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionRedefinitionException.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableNotFoundExeption.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableRedeclarationException.h">
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionsEnvironment.h">
+      <Filter>Header Files\environments</Filter>
+    </ClInclude>
+    <ClInclude Include="VariablesEnvironment.h">
+      <Filter>Header Files\environments</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Variable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplementASTNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnknownOperatorException.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

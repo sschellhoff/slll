@@ -18,7 +18,7 @@ namespace slll {
 		TokenType Type()const;
 		const std::string &Value()const;
 
-		friend std::ostream &operator<<(std::ostream &stream, const Token &token);
+		//friend std::ostream &operator<<(std::ostream &stream, const Token &token);
 	};
 
 }

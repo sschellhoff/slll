@@ -1,5 +1,7 @@
 #include "GASVisitor.h"
 
+#include "UnknownOperatorException.h"
+
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
 #include "PrintIntStatementASTNode.h"
@@ -12,6 +14,8 @@
 #include "IfASTNode.h"
 #include "IfElseASTNode.h"
 #include "WhileASTNode.h"
+#include "ComplementASTNode.h"
+#include "FunctionDefinitionsASTNode.h"
 #include <sstream>
 
 using namespace slll;
@@ -55,25 +59,25 @@ void GASVisitor::Visit(const BinOpASTNode * node)
 	auto op = node->Op();
 	node->Left()->AcceptVisitor(this);
 	switch (op) {
-	case TokenType::add:
+	case BinaryOperator::add:
 		out << "push %eax" << std::endl;
 		node->Right()->AcceptVisitor(this);
 		out << "addl (%esp), %eax" << std::endl
 			<< "addl $4, %esp" << std::endl;
 		break;
-	case TokenType::sub:
+	case BinaryOperator::sub:
 		out << "push %eax" << std::endl;
 		node->Right()->AcceptVisitor(this);
 		out << "subl %eax, (%esp)" << std::endl
 			<< "pop %eax" << std::endl;
 		break;
-	case TokenType::mult:
+	case BinaryOperator::mult:
 		out << "push %eax" << std::endl;
 		node->Right()->AcceptVisitor(this);
 		out << "imull (%esp), %eax" << std::endl
 			<< "addl $4, %esp" << std::endl;
 		break;
-	case TokenType::div:
+	case BinaryOperator::div:
 		out << "push %eax" << std::endl;
 		node->Right()->AcceptVisitor(this);
 		out << "movl %eax, %ebx" << std::endl
@@ -81,7 +85,7 @@ void GASVisitor::Visit(const BinOpASTNode * node)
 			<< "movl $0, %edx" << std::endl
 			<< "idiv %ebx" << std::endl;
 		break;
-	case TokenType::mod:
+	case BinaryOperator::mod:
 		out << "push %eax" << std::endl;
 		node->Right()->AcceptVisitor(this);
 		out << "movl %eax, %ebx" << std::endl
@@ -90,8 +94,104 @@ void GASVisitor::Visit(const BinOpASTNode * node)
 			<< "idiv %ebx" << std::endl
 			<< "movl %edx, %eax" << std::endl;
 		break;
+	case BinaryOperator::boolAnd:
+	{
+		auto falseMarker = NewMarker();
+		out << "cmpl $0, %eax" << std::endl
+			<< "je " << falseMarker << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << falseMarker << ":" << std::endl;
+	}
+	break;
+	case BinaryOperator::boolOr:
+	{
+		auto trueMarker = NewMarker();
+		out << "cmpl $1, %eax" << std::endl
+			<< "je " << trueMarker << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << trueMarker << ":" << std::endl;
+	}
+	break;
+	case BinaryOperator::equals:
+	{
+		auto eqMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "je " << eqMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< eqMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+		break;
+	case BinaryOperator::unEquals:
+	{
+		auto uneqMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "jne " << uneqMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< uneqMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+	break;
+	case BinaryOperator::less:
+	{
+		auto lMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "jl " << lMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< lMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+	break;
+	case BinaryOperator::greater:
+	{
+		auto gMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "jg " << gMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< gMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+	break;
+	case BinaryOperator::lessEquals:
+	{
+		auto leMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "jle " << leMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< leMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+	break;
+	case BinaryOperator::greaterEquals:
+	{
+		auto geMarker = NewMarker();
+		out << "push %eax" << std::endl;
+		node->Right()->AcceptVisitor(this);
+		out << "cmpl %eax, (%esp)" << std::endl
+			<< "movl $1, %eax" << std::endl
+			<< "jge " << geMarker << std::endl
+			<< "movl $0, %eax" << std::endl
+			<< geMarker << ":" << std::endl
+			<< "addl $4, %esp" << std::endl;
+	}
+	break;
 	default:
-		out << "wrong operator" << std::endl;
+		throw UnknownOperatorException();
 	}
 }
 
@@ -107,8 +207,8 @@ void GASVisitor::Visit(const PrintNewLineStatementASTNode *n) {
 }
 
 void GASVisitor::Visit(const StatementBlockASTNode *n) {
-	environmentStack.push(n->Environment());
-	auto size = n->Environment()->GetSize();
+	environmentStack.push(n->VariablesEnvironment());
+	auto size = n->VariablesEnvironment()->GetSize();
 	out << "subl $" << size << ", %esp" << std::endl;
 	auto children = n->Children();
 	for (auto it = children->begin(); it != children->end(); it++) {
@@ -169,4 +269,20 @@ void GASVisitor::Visit(const WhileASTNode *n) {
 	n->Body()->AcceptVisitor(this);
 	out << "jmp " << startMarker << std::endl
 		<< endMarker << ":" << std::endl;
+}
+
+void GASVisitor::Visit(const ComplementASTNode *n) {
+	out << "push $1" << std::endl;
+	n->Expression()->AcceptVisitor(this);
+	out << "subl %eax, (%esp)" << std::endl
+		<< "pop %eax" << std::endl;
+}
+
+void GASVisitor::Visit(const FunctionDefinitionsASTNode *n) {
+	auto funcEnv = n->Environment();
+	//TODO write functiondefinitions
+	auto functions = n->Children();
+	for (auto it = functions->begin(); it != functions->end(); it++) {
+		it->get()->AcceptVisitor(this);
+	}
 }

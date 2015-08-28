@@ -1,26 +1,26 @@
 #pragma once
 
 #include "IAST.h"
-#include "Environment.h"
+#include "VariablesEnvironment.h"
 #include <memory>
-#include <vector>
+#include <list>
 
 namespace slll {
 
 	class StatementBlockASTNode: public IAST
 	{
 	private:
-		std::unique_ptr<Environment> environment;
-		std::vector<std::unique_ptr<IAST>> children;
+		std::unique_ptr<VariablesEnvironment> environment;
+		std::list<ast> children;
 	public:
-		StatementBlockASTNode(Environment *parentEnvironment);
+		StatementBlockASTNode(VariablesEnvironment *parentEnvironment);
 		~StatementBlockASTNode();
 		StatementBlockASTNode(const StatementBlockASTNode &n) = delete;
 		StatementBlockASTNode(StatementBlockASTNode &&n);
 		void AcceptVisitor(IVisitor *visitor);
 		void Add(std::unique_ptr<IAST> child);
-		const std::vector<std::unique_ptr<IAST>> *Children() const;
-		Environment *Environment() const;
+		const std::list<std::unique_ptr<IAST>> *Children() const;
+		VariablesEnvironment *VariablesEnvironment() const;
 	};
 
 }

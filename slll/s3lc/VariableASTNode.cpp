@@ -12,7 +12,7 @@ VariableASTNode::~VariableASTNode()
 }
 
 VariableASTNode::VariableASTNode(VariableASTNode &&n) {
-	n.variable_id = this->variable_id;
+	variable_id = n.variable_id;
 }
 
 unsigned int slll::VariableASTNode::Variable() const

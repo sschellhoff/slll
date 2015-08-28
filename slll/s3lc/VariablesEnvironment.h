@@ -6,14 +6,14 @@
 
 namespace slll {
 
-	class Environment
+	class VariablesEnvironment
 	{
 	private:
-		Environment *parent;
+		VariablesEnvironment *parent;
 		std::vector<Variable> variables;
 	public:
-		Environment(Environment *parent);
-		~Environment();
+		VariablesEnvironment(VariablesEnvironment *parent);
+		~VariablesEnvironment();
 		bool ExistsInScope(unsigned int id)const;
 		bool ExistsInScope(std::string name)const;
 		bool Contains(std::string name)const;

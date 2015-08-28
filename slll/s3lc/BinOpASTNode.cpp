@@ -3,7 +3,7 @@
 
 using namespace slll;
 
-BinOpASTNode::BinOpASTNode(ast left, ast right, TokenType op): left(std::move(left)), right(std::move(right)), op(op)
+BinOpASTNode::BinOpASTNode(ast left, ast right, BinaryOperator op): left(std::move(left)), right(std::move(right)), op(op)
 {
 }
 
@@ -13,9 +13,9 @@ BinOpASTNode::~BinOpASTNode()
 }
 
 BinOpASTNode::BinOpASTNode(BinOpASTNode &&n) {
-	n.left = std::move(this->left);
-	n.right = std::move(this->right);
-	n.op = this->op;
+	left = std::move(n.left);
+	right = std::move(n.right);
+	op = n.op;
 }
 
 IAST *BinOpASTNode::Left() const
@@ -28,7 +28,7 @@ IAST * slll::BinOpASTNode::Right() const
 	return right.get();
 }
 
-TokenType slll::BinOpASTNode::Op() const
+BinaryOperator slll::BinOpASTNode::Op() const
 {
 	return op;
 }

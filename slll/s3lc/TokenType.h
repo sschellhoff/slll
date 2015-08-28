@@ -14,6 +14,8 @@ namespace slll {
 		ge,				// greater equals operator	>=
 		eq,				// equals operator			==
 		ne,				// not equals operator		!=
+		boolAnd,		// and operator				&&
+		boolOr,			// or operator				||
 		neg,			// negation operator		!
 		assign,			// assignment operator		=
 		decl,			// declaration operator		:=

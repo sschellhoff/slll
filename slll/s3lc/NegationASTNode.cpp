@@ -13,7 +13,7 @@ NegationASTNode::~NegationASTNode()
 }
 
 NegationASTNode::NegationASTNode(NegationASTNode &&n) {
-	n.expression = std::move(expression);
+	expression = std::move(n.expression);
 }
 
 IAST *NegationASTNode::Expression()const {

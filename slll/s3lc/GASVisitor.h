@@ -4,7 +4,7 @@
 #include <stack>
 
 #include "IVisitor.h"
-#include "Environment.h"
+#include "VariablesEnvironment.h"
 
 namespace slll {
 
@@ -13,7 +13,7 @@ namespace slll {
 	{
 	private:
 		std::ostream &out;
-		std::stack<Environment*> environmentStack;
+		std::stack<VariablesEnvironment*> environmentStack;
 		unsigned int nextMarkerId;
 	public:
 		GASVisitor(std::ostream &out);
@@ -33,6 +33,8 @@ namespace slll {
 		void Visit(const IfASTNode *n);
 		void Visit(const IfElseASTNode *n);
 		void Visit(const WhileASTNode *n);
+		void Visit(const ComplementASTNode *n);
+		void Visit(const FunctionDefinitionsASTNode *n);
 	};
 
 }

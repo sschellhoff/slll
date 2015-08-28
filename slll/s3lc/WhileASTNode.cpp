@@ -13,8 +13,8 @@ WhileASTNode::~WhileASTNode()
 }
 
 WhileASTNode::WhileASTNode(WhileASTNode &&n) {
-	n.condition = std::move(this->condition);
-	n.body = std::move(this->body);
+	condition = std::move(n.condition);
+	body = std::move(n.body);
 }
 
 IAST *WhileASTNode::Condition()const {

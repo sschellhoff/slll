@@ -23,8 +23,8 @@ const std::string & Token::Value() const
 	return value;
 }
 
-std::ostream & slll::operator<<(std::ostream & stream, const Token & token)
+/*std::ostream & slll::operator<<(std::ostream & stream, const Token & token)
 {
 	stream << "(" << token.Type() << ", " << token.Value() << ")";
 	return stream;
-}
+}*/

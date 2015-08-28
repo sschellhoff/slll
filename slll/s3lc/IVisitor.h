@@ -13,6 +13,8 @@ namespace slll {
 	class IfASTNode;
 	class IfElseASTNode;
 	class WhileASTNode;
+	class ComplementASTNode;
+	class FunctionDefinitionsASTNode;
 
 	class IVisitor
 	{
@@ -31,6 +33,9 @@ namespace slll {
 		virtual void Visit(const IfASTNode *n) = 0;
 		virtual void Visit(const IfElseASTNode *n) = 0;
 		virtual void Visit(const WhileASTNode *n) = 0;
+		virtual void Visit(const ComplementASTNode *n) = 0;
+		virtual void Visit(const FunctionDefinitionsASTNode *n) = 0;
+		
 	};
 
 }

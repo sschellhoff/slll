@@ -13,9 +13,9 @@ IfElseASTNode::~IfElseASTNode()
 }
 
 IfElseASTNode::IfElseASTNode(IfElseASTNode &&n) {
-	n.condition = std::move(this->condition);
-	n.thenBody = std::move(this->thenBody);
-	n.elseBody = std::move(this->elseBody);
+	condition = std::move(n.condition);
+	thenBody = std::move(n.thenBody);
+	elseBody = std::move(n.elseBody);
 }
 
 IAST *IfElseASTNode::Condition()const {
