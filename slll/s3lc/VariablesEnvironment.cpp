@@ -3,10 +3,13 @@
 
 using namespace slll;
 
-VariablesEnvironment::VariablesEnvironment(VariablesEnvironment *parent):parent(parent)
+VariablesEnvironment::VariablesEnvironment(VariablesEnvironment *parent):parent(parent), isParameterEnvironment(false)
 {
 }
 
+
+VariablesEnvironment::VariablesEnvironment(VariablesEnvironment *parent, bool isParamEnv) :parent(parent), isParameterEnvironment(isParamEnv) {
+}
 
 VariablesEnvironment::~VariablesEnvironment()
 {
@@ -79,16 +82,19 @@ size_t VariablesEnvironment::GetSize()const {
 	return size;
 }
 
-size_t VariablesEnvironment::GetSizeFromParents()const {
+size_t VariablesEnvironment::GetSizeFromParentsWithoutParamEnv()const {
 	if (parent != nullptr) {
-		return parent->GetSize() + parent->GetSizeFromParents();
+		return parent->GetSize() + parent->GetSizeFromParentsWithoutParamEnv();
 	}
 	return 0;
 }
 
 int VariablesEnvironment::GetRelativeAdress(unsigned int id)const {
+	if (IsParameter(id)) {
+		return GetRelativeAdressOfParameter(id);
+	}
 	if (Contains(id)) {
-		unsigned int offset = GetSizeFromParents();
+		unsigned int offset = GetSizeFromParentsWithoutParamEnv();
 
 		for (auto it = variables.begin(); it != variables.end(); it++) {
 			if ((*it).Id() == id) {
@@ -105,4 +111,38 @@ int VariablesEnvironment::GetRelativeAdress(unsigned int id)const {
 	}
 
 	return parent->GetRelativeAdress(id);
+}
+
+int VariablesEnvironment::GetRelativeAdressOfParameter(unsigned int id)const {
+	if (isParameterEnvironment && Contains(id)) {
+		int offset = 4; //TODO maybe take constant for this, it is the size of ebp on the stack
+
+		for (auto it = variables.rbegin(); it != variables.rend(); it++) {
+			if ((*it).Id() == id) {
+				return -(offset + (int)(*it).Size());
+			} else {
+				offset += (*it).Size();
+			}
+		}
+	}
+
+	if (parent == nullptr) {
+		throw VariableNotFoundExeption();
+	}
+
+	return parent->GetRelativeAdressOfParameter(id);
+}
+
+bool VariablesEnvironment::IsParameterEnvironment()const {
+	return isParameterEnvironment;
+}
+
+bool VariablesEnvironment::IsParameter(unsigned int id)const {
+	if (Contains(id)) {
+		return isParameterEnvironment;
+	}
+	if (parent != nullptr) {
+		return parent->IsParameter(id);
+	}
+	throw VariableNotFoundExeption();
 }

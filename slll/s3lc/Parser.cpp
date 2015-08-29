@@ -8,7 +8,6 @@
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
 #include "PrintIntStatementASTNode.h"
-#include "PrintNewLineStatementASTNode.h"
 #include "StatementBlockASTNode.h"
 #include "DeclarationASTNode.h"
 #include "AssignmentASTNode.h"
@@ -18,6 +17,10 @@
 #include "IfElseASTNode.h"
 #include "WhileASTNode.h"
 #include "ComplementASTNode.h"
+#include "FunctionDefinitionASTNode.h"
+#include "FunctionDefinitionsASTNode.h"
+#include "FunctionCallASTNode.h"
+#include "ReturnASTNode.h"
 
 using namespace slll;
 
@@ -28,14 +31,41 @@ Parser::~Parser() {
 }
 
 ast Parser::Parse() {
-	auto result{ statement(nullptr) };
+	//auto result{ statement(nullptr) };
+	auto result{ program() };
 	if (currentToken.Type() != TokenType::eof) {
 		throw ParseException();
 	}
 	return result;
 }
 
-ast Parser::statement(VariablesEnvironment *env) {
+ast Parser::program() {
+	auto result = std::make_unique<FunctionDefinitionsASTNode>();
+	while (currentToken.Type() != TokenType::eof) {
+		result->Add(functiondefinition());
+	}
+	return std::move(result);
+}
+
+ast Parser::functiondefinition() {
+	if (currentToken.Type() == TokenType::identifier) {
+		auto name = currentToken.Value();
+		currentToken = lexer.NextToken();
+		if (currentToken.Type() != TokenType::lpar) {
+			throw ParseException();
+		}
+		currentToken = lexer.NextToken(); 
+		if (currentToken.Type() != TokenType::rpar) {
+			throw ParseException();
+		}
+		currentToken = lexer.NextToken();
+		Function func(name);
+		return std::make_unique<FunctionDefinitionASTNode>(func, codeblock(nullptr));
+	}
+	throw ParseException();
+}
+
+ast Parser::codeblock(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::lbra) {
 		currentToken = lexer.NextToken();
 		auto result = std::make_unique<StatementBlockASTNode>(env);
@@ -47,16 +77,28 @@ ast Parser::statement(VariablesEnvironment *env) {
 		}
 		currentToken = lexer.NextToken();
 		return std::move(result);
+	}
+	throw ParseException();
+}
+
+ast Parser::statement(VariablesEnvironment *env) {
+	if (currentToken.Type() == TokenType::lbra) {
+		return codeblock(env);
 	} else if (currentToken.Type() == TokenType::printi_ident) {
 		currentToken = lexer.NextToken();
 		return std::make_unique<PrintIntStatementASTNode>(expression(env));
-	} else if (currentToken.Type() == TokenType::println) {
-		currentToken = lexer.NextToken();
-		return std::make_unique<PrintNewLineStatementASTNode>();
 	} else if (currentToken.Type() == TokenType::if_ident) {
 		return if_statement(env);
-	} else if(currentToken.Type() == TokenType::while_ident) {
+	}
+	else if (currentToken.Type() == TokenType::while_ident) {
 		return while_statement(env);
+	} else if(currentToken.Type() == TokenType::return_ident) {
+		currentToken = lexer.NextToken();
+		if (currentToken.Type() == TokenType::sep) {
+			currentToken = lexer.NextToken();
+			return std::make_unique<ReturnASTNode>(env);
+		}
+		return std::make_unique<ReturnASTNode>(env, expression(env));
 	} else if (currentToken.Type() == TokenType::identifier) {
 		auto name = currentToken.Value();
 		currentToken = lexer.NextToken();
@@ -72,6 +114,14 @@ ast Parser::statement(VariablesEnvironment *env) {
 			}
 			auto var = env->GetId(name);
 			return assignment(env, var);
+		}
+		else if (currentToken.Type() == TokenType::lpar) {
+			currentToken = lexer.NextToken();
+			if (currentToken.Type() != TokenType::rpar) {
+				throw ParseException();
+			}
+			currentToken = lexer.NextToken();
+			return std::make_unique<FunctionCallASTNode>(name);
 		}
 	}
 	throw ParseException();
@@ -247,6 +297,17 @@ ast Parser::literal(VariablesEnvironment *env) {
 		auto var = env->GetId(currentToken.Value());
 		currentToken = lexer.NextToken();
 		return std::make_unique<VariableASTNode>(var);
+	} else if (currentToken.Type() == TokenType::identifier) { //TODO check for valid function
+		auto name = currentToken.Value();
+		currentToken = lexer.NextToken();
+		if (currentToken.Type() == TokenType::lpar) {
+			currentToken = lexer.NextToken();
+			if (currentToken.Type() != TokenType::rpar) {
+				throw ParseException();
+			}
+			currentToken = lexer.NextToken();
+			return std::make_unique<FunctionCallASTNode>(name);
+		}
 	}
 	throw ParseException();
 }

@@ -4,7 +4,6 @@ namespace slll {
 	class IntConstASTNode;
 	class BinOpASTNode;
 	class PrintIntStatementASTNode;
-	class PrintNewLineStatementASTNode;
 	class StatementBlockASTNode;
 	class DeclarationASTNode;
 	class AssignmentASTNode;
@@ -14,7 +13,10 @@ namespace slll {
 	class IfElseASTNode;
 	class WhileASTNode;
 	class ComplementASTNode;
+	class FunctionDefinitionASTNode;
 	class FunctionDefinitionsASTNode;
+	class FunctionCallASTNode;
+	class ReturnASTNode;
 
 	class IVisitor
 	{
@@ -24,7 +26,6 @@ namespace slll {
 		virtual void Visit(const IntConstASTNode *n) = 0;
 		virtual void Visit(const BinOpASTNode *n) = 0;
 		virtual void Visit(const PrintIntStatementASTNode *n) = 0;
-		virtual void Visit(const PrintNewLineStatementASTNode *n) = 0;
 		virtual void Visit(const StatementBlockASTNode *n) = 0;
 		virtual void Visit(const DeclarationASTNode *n) = 0;
 		virtual void Visit(const AssignmentASTNode *n) = 0;
@@ -34,8 +35,10 @@ namespace slll {
 		virtual void Visit(const IfElseASTNode *n) = 0;
 		virtual void Visit(const WhileASTNode *n) = 0;
 		virtual void Visit(const ComplementASTNode *n) = 0;
+		virtual void Visit(const FunctionDefinitionASTNode *n) = 0;
 		virtual void Visit(const FunctionDefinitionsASTNode *n) = 0;
-		
+		virtual void Visit(const FunctionCallASTNode *n) = 0;
+		virtual void Visit(const ReturnASTNode *n) = 0;		
 	};
 
 }

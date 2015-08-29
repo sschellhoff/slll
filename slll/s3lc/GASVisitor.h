@@ -18,13 +18,10 @@ namespace slll {
 	public:
 		GASVisitor(std::ostream &out);
 		~GASVisitor();
-		void WriteProgramPrefix();
-		void WriteProgramSuffix();
 		std::string NewMarker();
 		void Visit(const IntConstASTNode *node);
 		void Visit(const BinOpASTNode *node);
 		void Visit(const PrintIntStatementASTNode *n);
-		void Visit(const PrintNewLineStatementASTNode *n);
 		void Visit(const StatementBlockASTNode *n);
 		void Visit(const DeclarationASTNode *n);
 		void Visit(const AssignmentASTNode *n);
@@ -34,7 +31,10 @@ namespace slll {
 		void Visit(const IfElseASTNode *n);
 		void Visit(const WhileASTNode *n);
 		void Visit(const ComplementASTNode *n);
+		void Visit(const FunctionDefinitionASTNode *n);
 		void Visit(const FunctionDefinitionsASTNode *n);
+		void Visit(const FunctionCallASTNode *n);
+		void Visit(const ReturnASTNode *n);
 	};
 
 }

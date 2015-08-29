@@ -23,8 +23,8 @@ namespace slll {
 		rpar,			// right parentheses		)
 		lbra,			// left bracket				{
 		rbra,			// right bracket			}
-		lindbra,		// left index bracket		[
-		rindbra,		// right index bracket		]
+		lindexbra,		// left index bracket		[
+		rindexbra,		// right index bracket		]
 		sep,			// seperator				;
 		opsep,			// operand seperator		,
 		intconst,		// integer constant			1337
@@ -37,7 +37,6 @@ namespace slll {
 		break_ident,	// break identifier			break
 		continue_ident,	// continue identifier		continue
 		printi_ident,	// print integer identifier printi
-		println,		// print newline identifier println
 		eof,			// end of file				<eof>
 		error			// error
 	};

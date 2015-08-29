@@ -1,11 +1,12 @@
 #include "GASVisitor.h"
 
+#include <sstream>
+
 #include "UnknownOperatorException.h"
 
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
 #include "PrintIntStatementASTNode.h"
-#include "PrintNewLineStatementASTNode.h"
 #include "StatementBlockASTNode.h"
 #include "DeclarationASTNode.h"
 #include "AssignmentASTNode.h"
@@ -15,8 +16,10 @@
 #include "IfElseASTNode.h"
 #include "WhileASTNode.h"
 #include "ComplementASTNode.h"
+#include "FunctionDefinitionASTNode.h"
 #include "FunctionDefinitionsASTNode.h"
-#include <sstream>
+#include "FunctionCallASTNode.h"
+#include "ReturnASTNode.h"
 
 using namespace slll;
 
@@ -27,19 +30,6 @@ GASVisitor::GASVisitor(std::ostream &out):out(out)
 
 GASVisitor::~GASVisitor()
 {
-}
-
-void GASVisitor::WriteProgramPrefix() {
-	out << ".text" << std::endl
-		<< ".globl _main" << std::endl
-		<< "_main:" << std::endl
-		<< "push %ebp" << std::endl
-		<< "mov %esp, %ebp" << std::endl;
-}
-
-void GASVisitor::WriteProgramSuffix() {
-	out << "pop %ebp" << std::endl
-		<< "ret" << std::endl;
 }
 
 std::string GASVisitor::NewMarker() {
@@ -202,10 +192,6 @@ void GASVisitor::Visit(const PrintIntStatementASTNode *n) {
 		<< "addl $4, %esp" << std::endl;
 }
 
-void GASVisitor::Visit(const PrintNewLineStatementASTNode *n) {
-	out << "call _print_nl" << std::endl;
-}
-
 void GASVisitor::Visit(const StatementBlockASTNode *n) {
 	environmentStack.push(n->VariablesEnvironment());
 	auto size = n->VariablesEnvironment()->GetSize();
@@ -278,11 +264,36 @@ void GASVisitor::Visit(const ComplementASTNode *n) {
 		<< "pop %eax" << std::endl;
 }
 
+void GASVisitor::Visit(const FunctionDefinitionASTNode *n) {
+	out << ".globl _" << n->Name() << std::endl
+		<< "_" << n->Name() << ":" << std::endl
+		<< "push %ebp" << std::endl
+		<< "mov %esp, %ebp" << std::endl;
+	n->Code()->AcceptVisitor(this);
+	out << "pop %ebp" << std::endl
+		<< "ret" << std::endl;
+}
+
 void GASVisitor::Visit(const FunctionDefinitionsASTNode *n) {
-	auto funcEnv = n->Environment();
+	//auto funcEnv = n->Environment();
 	//TODO write functiondefinitions
 	auto functions = n->Children();
 	for (auto it = functions->begin(); it != functions->end(); it++) {
 		it->get()->AcceptVisitor(this);
 	}
+}
+
+void GASVisitor::Visit(const FunctionCallASTNode *n) {
+	out << "call _" << n->Name() << std::endl;
+}
+
+void GASVisitor::Visit(const ReturnASTNode *n) {
+	auto size = n->VariablesEnvironment()->GetSize() + n->VariablesEnvironment()->GetSizeFromParentsWithoutParamEnv();
+	out << "addl $" << size << ", %esp" << std::endl;
+
+	if (n->HasResult()) {
+		n->Result()->AcceptVisitor(this);
+	}
+	out << "pop %ebp" << std::endl
+		<< "ret" << std::endl;
 }

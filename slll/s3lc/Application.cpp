@@ -5,7 +5,7 @@
 #include "GASVisitor.h"
 
 int main(int argc, const char *argv[]) {
-	slll::Parser p(" { if 0 && 0 printi 1 if 0 && 1 printi 2 if 1 && 0 printi 3 if 1 && 1 printi 4  if 0 || 0 printi 5 if 0 || 1 printi 6 if 1 || 0 printi 7 if 1 || 1 printi 8 }");
+	slll::Parser p("test() { return 1337 } main() { printi test() } ");
 	auto tree = p.Parse();
 
 	std::ofstream file;
@@ -13,9 +13,7 @@ int main(int argc, const char *argv[]) {
 
 	slll::GASVisitor gas(file);
 	//slll::GASVisitor gas(std::cout);
-	gas.WriteProgramPrefix();
 	tree->AcceptVisitor(&gas);
-	gas.WriteProgramSuffix();
 
 	file.close();
 

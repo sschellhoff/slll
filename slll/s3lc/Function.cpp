@@ -2,15 +2,15 @@
 
 using namespace slll;
 
-Function::Function(std::string name, unsigned int paramCount):name(name), numParams(paramCount) {
+Function::Function(std::string name):name(name) {
 }
 
 
 Function::~Function() {
 }
 
-unsigned int Function::GetParameterCount()const {
-	return numParams;
+size_t Function::GetParameterCount()const {
+	return parameters.size();
 }
 
 const std::string &Function::Name()const {

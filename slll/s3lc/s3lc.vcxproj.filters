@@ -63,9 +63,6 @@
     <ClCompile Include="PrintIntStatement.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="PrintNewLineStatement.cpp">
-      <Filter>Source Files\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="IVisitor.cpp">
       <Filter>Source Files\visitor</Filter>
     </ClCompile>
@@ -135,11 +132,17 @@
     <ClCompile Include="Variable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ComplementASTNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UnknownOperatorException.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ComplementASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="FunctionCallASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="ReturnASTNode.cpp">
+      <Filter>Source Files\nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +159,6 @@
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="PrintIntStatementASTNode.h">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintNewLineStatementASTNode.h">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="IVisitor.h">
@@ -236,14 +236,20 @@
     <ClInclude Include="Variable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ComplementASTNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BinaryOperator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ComplementASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
     <ClInclude Include="UnknownOperatorException.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionCallASTNode.h">
+      <Filter>Header Files\nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="ReturnASTNode.h">
+      <Filter>Header Files\nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

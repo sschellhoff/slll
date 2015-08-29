@@ -3,7 +3,7 @@
 
 using namespace slll;
 
-FunctionDefinitionsASTNode::FunctionDefinitionsASTNode()
+FunctionDefinitionsASTNode::FunctionDefinitionsASTNode():environment(std::make_unique<FunctionsEnvironment>())
 {
 }
 

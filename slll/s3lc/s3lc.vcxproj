@@ -123,9 +123,11 @@
     <ClCompile Include="BinOpASTNode.cpp" />
     <ClCompile Include="ComplementASTNode.cpp" />
     <ClCompile Include="DeclarationASTNode.cpp" />
+    <ClCompile Include="FunctionCallASTNode.cpp" />
     <ClCompile Include="FunctionDefinitionsASTNode.cpp" />
     <ClCompile Include="FunctionRedefinitionException.cpp" />
     <ClCompile Include="FunctionsEnvironment.cpp" />
+    <ClCompile Include="ReturnASTNode.cpp" />
     <ClCompile Include="UnknownOperatorException.cpp" />
     <ClCompile Include="VariablesEnvironment.cpp" />
     <ClCompile Include="Function.cpp" />
@@ -140,7 +142,6 @@
     <ClCompile Include="ParseException.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="PrintIntStatement.cpp" />
-    <ClCompile Include="PrintNewLineStatement.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Siever.cpp" />
     <ClCompile Include="StatementBlockASTNode.cpp" />
@@ -157,9 +158,11 @@
     <ClInclude Include="BinOpASTNode.h" />
     <ClInclude Include="ComplementASTNode.h" />
     <ClInclude Include="DeclarationASTNode.h" />
+    <ClInclude Include="FunctionCallASTNode.h" />
     <ClInclude Include="FunctionDefinitionsASTNode.h" />
     <ClInclude Include="FunctionRedefinitionException.h" />
     <ClInclude Include="FunctionsEnvironment.h" />
+    <ClInclude Include="ReturnASTNode.h" />
     <ClInclude Include="UnknownOperatorException.h" />
     <ClInclude Include="VariablesEnvironment.h" />
     <ClInclude Include="Function.h" />
@@ -174,7 +177,6 @@
     <ClInclude Include="ParseException.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="PrintIntStatementASTNode.h" />
-    <ClInclude Include="PrintNewLineStatementASTNode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Siever.h" />

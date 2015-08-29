@@ -52,10 +52,10 @@ Token Scanner::NextToken()
 		}
 		return Token(TokenType::intconst, std::to_string(v));
 	}
-	if (isalpha(sourcecode[pointer])) {
+	if (isalpha(sourcecode[pointer]) || sourcecode[pointer] == '_') {
 		int start = pointer;
 		pointer++;
-		while (pointer < sourcecode.length() && isalnum(sourcecode[pointer])) {
+		while (pointer < sourcecode.length() && (isalnum(sourcecode[pointer]) || sourcecode[pointer] == '_')) {
 			pointer++;
 		}
 		std::string ident(sourcecode.substr(start, pointer - start));
@@ -75,8 +75,6 @@ Token Scanner::NextToken()
 			return Token(TokenType::continue_ident);
 		} else if (ident == "printi") {
 			return Token(TokenType::printi_ident);
-		} else if (ident == "println") {
-			return Token(TokenType::println);
 		}
 		return Token(TokenType::identifier, ident);
 	}
@@ -124,9 +122,9 @@ Token Scanner::NextToken()
 	case '}':
 		return Token(TokenType::rbra);
 	case '[':
-		return Token(TokenType::lindbra);
+		return Token(TokenType::lindexbra);
 	case ']':
-		return Token(TokenType::rindbra);
+		return Token(TokenType::rindexbra);
 	case ';':
 		return Token(TokenType::sep);
 	case ',':

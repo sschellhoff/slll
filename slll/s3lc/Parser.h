@@ -13,6 +13,9 @@ namespace slll {
 	{
 	private:
 		Siever lexer;
+		ast program();
+		ast functiondefinition();
+		ast codeblock(VariablesEnvironment *env);
 		ast statement(VariablesEnvironment *env);
 		ast expression(VariablesEnvironment *env);
 		ast addsub(VariablesEnvironment *env);
