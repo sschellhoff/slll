@@ -7,7 +7,6 @@
 
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
-#include "PrintIntStatementASTNode.h"
 #include "StatementBlockASTNode.h"
 #include "DeclarationASTNode.h"
 #include "AssignmentASTNode.h"
@@ -109,9 +108,6 @@ ast Parser::codeblock(VariablesEnvironment *env) {
 ast Parser::statement(VariablesEnvironment *env) {
 	if (currentToken.Type() == TokenType::lbra) {
 		return codeblock(env);
-	} else if (currentToken.Type() == TokenType::printi_ident) {
-		currentToken = lexer.NextToken();
-		return std::make_unique<PrintIntStatementASTNode>(expression(env));
 	} else if (currentToken.Type() == TokenType::if_ident) {
 		return if_statement(env);
 	}

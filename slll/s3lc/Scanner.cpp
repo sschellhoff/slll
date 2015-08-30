@@ -73,8 +73,6 @@ Token Scanner::NextToken()
 			return Token(TokenType::break_ident);
 		} else if (ident == "continue") {
 			return Token(TokenType::continue_ident);
-		} else if (ident == "printi") {
-			return Token(TokenType::printi_ident);
 		}
 		return Token(TokenType::identifier, ident);
 	}

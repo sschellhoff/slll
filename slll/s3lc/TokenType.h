@@ -36,7 +36,6 @@ namespace slll {
 		return_ident,	// return identifier		return
 		break_ident,	// break identifier			break
 		continue_ident,	// continue identifier		continue
-		printi_ident,	// print integer identifier printi
 		eof,			// end of file				<eof>
 		error			// error
 	};

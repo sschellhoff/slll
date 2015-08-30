@@ -141,7 +141,6 @@
     <ClCompile Include="NegationASTNode.cpp" />
     <ClCompile Include="ParseException.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="PrintIntStatement.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Siever.cpp" />
     <ClCompile Include="StatementBlockASTNode.cpp" />
@@ -176,7 +175,6 @@
     <ClInclude Include="NegationASTNode.h" />
     <ClInclude Include="ParseException.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="PrintIntStatementASTNode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Siever.h" />

@@ -60,9 +60,6 @@
     <ClCompile Include="StatementBlockASTNode.cpp">
       <Filter>Source Files\nodes</Filter>
     </ClCompile>
-    <ClCompile Include="PrintIntStatement.cpp">
-      <Filter>Source Files\nodes</Filter>
-    </ClCompile>
     <ClCompile Include="IVisitor.cpp">
       <Filter>Source Files\visitor</Filter>
     </ClCompile>
@@ -156,9 +153,6 @@
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="StatementBlockASTNode.h">
-      <Filter>Header Files\nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintIntStatementASTNode.h">
       <Filter>Header Files\nodes</Filter>
     </ClInclude>
     <ClInclude Include="IVisitor.h">

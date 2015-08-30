@@ -21,7 +21,6 @@ namespace slll {
 		std::string NewMarker();
 		void Visit(const IntConstASTNode *node);
 		void Visit(const BinOpASTNode *node);
-		void Visit(const PrintIntStatementASTNode *n);
 		void Visit(const StatementBlockASTNode *n);
 		void Visit(const DeclarationASTNode *n);
 		void Visit(const AssignmentASTNode *n);

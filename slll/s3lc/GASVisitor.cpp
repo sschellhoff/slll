@@ -6,7 +6,6 @@
 
 #include "IntConstASTNode.h"
 #include "BinOpASTNode.h"
-#include "PrintIntStatementASTNode.h"
 #include "StatementBlockASTNode.h"
 #include "DeclarationASTNode.h"
 #include "AssignmentASTNode.h"
@@ -183,13 +182,6 @@ void GASVisitor::Visit(const BinOpASTNode * node)
 	default:
 		throw UnknownOperatorException();
 	}
-}
-
-void GASVisitor::Visit(const PrintIntStatementASTNode *n) {
-	n->Expression()->AcceptVisitor(this);
-	out << "pushl %eax" << std::endl
-		<< "call _print_int" << std::endl
-		<< "addl $4, %esp" << std::endl;
 }
 
 void GASVisitor::Visit(const StatementBlockASTNode *n) {
