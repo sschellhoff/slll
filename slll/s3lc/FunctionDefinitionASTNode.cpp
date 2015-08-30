@@ -7,6 +7,8 @@ using namespace slll;
 FunctionDefinitionASTNode::FunctionDefinitionASTNode(Function function, ast code):function(function), code(std::move(code)) {
 }
 
+FunctionDefinitionASTNode::FunctionDefinitionASTNode(Function function, ast code, std::unique_ptr<VariablesEnvironment> parametersEnvironment) : function(function), code(std::move(code)), parametersEnvironment(std::move(parametersEnvironment)) {
+}
 
 FunctionDefinitionASTNode::~FunctionDefinitionASTNode() {
 }
@@ -24,4 +26,8 @@ const std::string &FunctionDefinitionASTNode::Name()const {
 
 IAST *FunctionDefinitionASTNode::Code()const {
 	return code.get();
+}
+
+VariablesEnvironment *FunctionDefinitionASTNode::GetParametersEnvironment()const {
+	return parametersEnvironment.get();
 }

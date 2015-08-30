@@ -5,7 +5,7 @@
 #include "GASVisitor.h"
 
 int main(int argc, const char *argv[]) {
-	slll::Parser p("test() { return 1337 } main() { printi test() } ");
+	slll::Parser p("res(a, b) { return a * b } test(b) { print2(1, b) } main() { test(res(12, 25)) } ");
 	auto tree = p.Parse();
 
 	std::ofstream file;

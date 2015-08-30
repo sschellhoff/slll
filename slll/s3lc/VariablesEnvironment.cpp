@@ -15,6 +15,9 @@ VariablesEnvironment::~VariablesEnvironment()
 {
 }
 
+VariablesEnvironment::VariablesEnvironment(VariablesEnvironment &&n):parent(n.parent), isParameterEnvironment(n.isParameterEnvironment), variables(std::move(n.variables)) {
+}
+
 bool VariablesEnvironment::ExistsInScope(unsigned int id)const {
 	for (auto it = variables.begin(); it != variables.end(); it++) {
 		if ((*it).Id() == id) {
@@ -83,7 +86,7 @@ size_t VariablesEnvironment::GetSize()const {
 }
 
 size_t VariablesEnvironment::GetSizeFromParentsWithoutParamEnv()const {
-	if (parent != nullptr) {
+	if (parent != nullptr && !parent->IsParameterEnvironment()) {
 		return parent->GetSize() + parent->GetSizeFromParentsWithoutParamEnv();
 	}
 	return 0;
@@ -94,11 +97,11 @@ int VariablesEnvironment::GetRelativeAdress(unsigned int id)const {
 		return GetRelativeAdressOfParameter(id);
 	}
 	if (Contains(id)) {
-		unsigned int offset = GetSizeFromParentsWithoutParamEnv();
+		int offset = GetSizeFromParentsWithoutParamEnv();
 
 		for (auto it = variables.begin(); it != variables.end(); it++) {
 			if ((*it).Id() == id) {
-				return offset + (*it).Size();
+				return -(offset + (int)(*it).Size());
 			}
 			else {
 				offset += (*it).Size();
@@ -119,7 +122,7 @@ int VariablesEnvironment::GetRelativeAdressOfParameter(unsigned int id)const {
 
 		for (auto it = variables.rbegin(); it != variables.rend(); it++) {
 			if ((*it).Id() == id) {
-				return -(offset + (int)(*it).Size());
+				return offset + (*it).Size();
 			} else {
 				offset += (*it).Size();
 			}

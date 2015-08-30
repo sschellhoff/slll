@@ -16,6 +16,8 @@ namespace slll {
 		VariablesEnvironment(VariablesEnvironment *parent);
 		VariablesEnvironment(VariablesEnvironment *parent, bool isParamEnv);
 		~VariablesEnvironment();
+		VariablesEnvironment(const VariablesEnvironment &r) = delete;
+		VariablesEnvironment(VariablesEnvironment &&n);
 		bool ExistsInScope(unsigned int id)const;
 		bool ExistsInScope(std::string name)const;
 		bool Contains(std::string name)const;

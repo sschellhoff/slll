@@ -54,13 +54,38 @@ ast Parser::functiondefinition() {
 		if (currentToken.Type() != TokenType::lpar) {
 			throw ParseException();
 		}
-		currentToken = lexer.NextToken(); 
+		currentToken = lexer.NextToken();
+		std::vector<Variable> parameters;
+		if (currentToken.Type() == TokenType::identifier) {
+			parameters.push_back(Variable(currentToken.Value(), 4)); //TODO make size variable
+			currentToken = lexer.NextToken();
+			while (currentToken.Type() != TokenType::rpar) {
+				if (currentToken.Type() != TokenType::opsep) {
+					throw ParseException();
+				}
+				currentToken = lexer.NextToken();
+				if (currentToken.Type() != TokenType::identifier) {
+					throw ParseException();
+				}
+				parameters.push_back(Variable(currentToken.Value(), 4)); //TODO make size variable
+				currentToken = lexer.NextToken();
+			}
+		}
 		if (currentToken.Type() != TokenType::rpar) {
 			throw ParseException();
 		}
+
 		currentToken = lexer.NextToken();
-		Function func(name);
-		return std::make_unique<FunctionDefinitionASTNode>(func, codeblock(nullptr));
+		if (parameters.size() == 0) {
+			return std::make_unique<FunctionDefinitionASTNode>(Function(name), codeblock(nullptr));
+		} else {
+			//TODO make environment (parameter mode) with parameters as variables in it and delegate it to codeblock
+			auto paramEnv = std::make_unique<VariablesEnvironment>(nullptr, true);
+			for (auto param = parameters.begin(); param != parameters.end(); param++) {
+				paramEnv->AddVariable(param->Name(), param->Size());
+			}
+			return std::make_unique<FunctionDefinitionASTNode>(Function(name, parameters), codeblock(paramEnv.get()), std::move(paramEnv));
+		}
 	}
 	throw ParseException();
 }
@@ -117,11 +142,23 @@ ast Parser::statement(VariablesEnvironment *env) {
 		}
 		else if (currentToken.Type() == TokenType::lpar) {
 			currentToken = lexer.NextToken();
+			std::vector<ast> params;
+			if (currentToken.Type() != TokenType::rpar) {
+				params.push_back(expression(env));
+			}
+			while (currentToken.Type() == TokenType::opsep) {
+				currentToken = lexer.NextToken();
+				params.push_back(expression(env));
+			}
 			if (currentToken.Type() != TokenType::rpar) {
 				throw ParseException();
 			}
 			currentToken = lexer.NextToken();
-			return std::make_unique<FunctionCallASTNode>(name);
+			if (params.size() == 0) {
+				return std::make_unique<FunctionCallASTNode>(name);
+			} else {
+				return std::make_unique<FunctionCallASTNode>(name, params);
+			}
 		}
 	}
 	throw ParseException();
@@ -301,13 +338,26 @@ ast Parser::literal(VariablesEnvironment *env) {
 		auto name = currentToken.Value();
 		currentToken = lexer.NextToken();
 		if (currentToken.Type() == TokenType::lpar) {
+		currentToken = lexer.NextToken();
+		std::vector<ast> params;
+		if (currentToken.Type() != TokenType::rpar) {
+			params.push_back(expression(env));
+		}
+		while (currentToken.Type() == TokenType::opsep) {
 			currentToken = lexer.NextToken();
-			if (currentToken.Type() != TokenType::rpar) {
-				throw ParseException();
-			}
-			currentToken = lexer.NextToken();
+			params.push_back(expression(env));
+		}
+		if (currentToken.Type() != TokenType::rpar) {
+			throw ParseException();
+		}
+		currentToken = lexer.NextToken();
+		if (params.size() == 0) {
 			return std::make_unique<FunctionCallASTNode>(name);
 		}
+		else {
+			return std::make_unique<FunctionCallASTNode>(name, params);
+		}
+	}
 	}
 	throw ParseException();
 }

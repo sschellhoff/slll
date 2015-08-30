@@ -215,7 +215,7 @@ void GASVisitor::Visit(const AssignmentASTNode *n) {
 }
 
 void GASVisitor::Visit(const VariableASTNode *n) {
-	out << "movl -" << environmentStack.top()->GetRelativeAdress(n->Variable()) << "(%ebp), %eax" << std::endl;
+	out << "movl " << environmentStack.top()->GetRelativeAdress(n->Variable()) << "(%ebp), %eax" << std::endl;
 }
 
 void GASVisitor::Visit(const NegationASTNode *n) {
@@ -284,7 +284,15 @@ void GASVisitor::Visit(const FunctionDefinitionsASTNode *n) {
 }
 
 void GASVisitor::Visit(const FunctionCallASTNode *n) {
-	out << "call _" << n->Name() << std::endl;
+	auto params = n->GetParameters();
+	if (params->size() != 0) {
+		for (auto it = params->rbegin(); it != params->rend(); it++) {
+			(*it)->AcceptVisitor(this);
+			out << "push %eax" << std::endl;
+		}
+	}
+	out << "call _" << n->Name() << std::endl
+		<< "addl $" << params->size() * 4 << ", %esp" << std::endl; //TODO make size variable
 }
 
 void GASVisitor::Visit(const ReturnASTNode *n) {
