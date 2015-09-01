@@ -120,7 +120,7 @@ int VariablesEnvironment::GetRelativeAdressOfParameter(unsigned int id)const {
 	if (isParameterEnvironment && Contains(id)) {
 		int offset = 4; //TODO maybe take constant for this, it is the size of ebp on the stack
 
-		for (auto it = variables.rbegin(); it != variables.rend(); it++) {
+		for (auto it = variables.begin(); it != variables.end(); it++) {
 			if ((*it).Id() == id) {
 				return offset + (*it).Size();
 			} else {

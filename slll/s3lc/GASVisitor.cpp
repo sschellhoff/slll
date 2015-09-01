@@ -198,12 +198,12 @@ void GASVisitor::Visit(const StatementBlockASTNode *n) {
 
 void GASVisitor::Visit(const DeclarationASTNode *n) {
 	n->Expression()->AcceptVisitor(this);
-	out << "movl %eax, -" << environmentStack.top()->GetRelativeAdress(n->VariableId()) << "(%ebp)" << std::endl;
+	out << "movl %eax, " << environmentStack.top()->GetRelativeAdress(n->VariableId()) << "(%ebp)" << std::endl;
 }
 
 void GASVisitor::Visit(const AssignmentASTNode *n) {
 	n->Expression()->AcceptVisitor(this);
-	out << "movl %eax, -" << environmentStack.top()->GetRelativeAdress(n->VariableId()) << "(%ebp)" << std::endl;
+	out << "movl %eax, " << environmentStack.top()->GetRelativeAdress(n->VariableId()) << "(%ebp)" << std::endl;
 }
 
 void GASVisitor::Visit(const VariableASTNode *n) {
